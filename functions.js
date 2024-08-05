@@ -149,3 +149,76 @@ function setText() {
         }
     }
 }
+
+//Build slider for music volume
+function setMusicVol() {
+    vol = slider.value() / 100;
+    song.setVolume(vol);
+    songRgb.setVolume(vol);
+}
+
+function RGBType() {
+    //Play song. Stop first to ensure no multiple clicks to start music
+    song.stop();
+    songRgb.stop();
+    songRgb.setVolume(vol);
+    songRgb.play();
+    songRgb.loop();
+
+    //reset background variables
+    background("lightgreen");
+    getVar();
+
+    //create input
+    rgbInput1 = createInput();
+    rgbInput1.position((canvasSize * 3) / 80, buttonHeight);
+
+    //create submit button
+    rgbButton1 = createButton("Submit");
+    rgbButton1.position(rgbInput1.x + rgbInput1.width, buttonHeight);
+    rgbButton1.mousePressed(check);
+
+    //create clear screen button
+    rgbButton2 = createButton("Clear Screen");
+    rgbButton2.position(
+        rgbInput1.x + rgbInput1.width + rgbButton1.width + 10,
+        buttonHeight
+    );
+    rgbButton2.mousePressed(screen);
+
+    //ensure table does not exist
+    isTableShown = false;
+
+    isRgbMode = true;
+
+    //call text
+    //setText()
+    setHeader();
+}
+
+//function triggered by Clear Screen button
+function screen() {
+    //dual function to slow frame rate or change colours for game over screen
+    if (gameOver == false) {
+        //change background
+        fill(random(250, 255), random(250, 255), random(250, 255));
+        rect(canvasSize / 40, canvasSize / 4, canvasSize * 1.25, canvasSize / 1.75);
+
+        //initiate score penalty
+        score -= 2;
+
+        //reduce the frameRate randomly
+        rateFrame = rateFrame - random(0.1, 0.3);
+    } else {
+        //initiate game over function
+        overGame();
+    }
+}
+
+//ensures game can be immediately stopped when time up
+function halt() {
+    //if time limit exceeded
+    if (gameObj.immediateStopGame == true) {
+        isEndGame = true;
+    }
+}
