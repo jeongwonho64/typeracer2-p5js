@@ -67,3 +67,80 @@ function preload() {
     songLose = loadSound("PacMan.mp3");
     songRgb = loadSound("AmongUs.mp3");
 }
+
+//assign value to variables
+function getVar() {
+    //set array of variables to input into objects
+    splitString = split(random(string), "");
+
+    //set number of words in line
+    spaceCounter = 0;
+
+    //start indexing at 1
+    counter = -1;
+
+    //set up array for character objects
+    charObjArray = [];
+
+    //set up rgbType game
+    score = 0;
+    foundWord = false;
+    gameOver = false;
+
+    //remove rgb fields for other mode
+    if (rgbInput1 != null) {
+        //remove zen mode input
+        rgbInput1.remove();
+        rgbButton1.remove();
+        rgbButton2.remove();
+    }
+
+    //set up user interface variables
+    canvasSize = 800;
+    lineSpacing = 50;
+
+    //set game over checker
+    isEndGame = false;
+
+    //remove table if existent
+    if (tableDatabase != null) {
+        //remove tableDatabase
+        tableDatabase.remove();
+    }
+
+    //Check if radio buttons existed
+    if (radioContainer != null) {
+        //call child node
+        if (radioContainer.elt.childNodes.length > 0) {
+            //remove child node
+            radioContainer.elt.removeChild(statsRadio.elt);
+        }
+    }
+
+    //remove textarea in zen mode if existent
+    if (inp != null) {
+        //remove zen mode input
+        inp.remove();
+    }
+
+    //check if table being shown
+    isTableShown = false;
+
+    //check if timer shown
+    isTimeShown = false;
+
+    //check if it is zen mode
+    isZenMode = false;
+
+    //check if it is showing statistic
+    isRadioSelected = false;
+
+    //check if it is rgbType mode
+    isRgbMode = false;
+
+    //assign text files to RGBType
+    wordArray = loadStrings("words.txt");
+
+    //make box opaque
+    done = 255;
+}
