@@ -144,3 +144,133 @@ function getVar() {
     //make box opaque
     done = 255;
 }
+
+//function triggered by submit button
+function check() {
+    if (gameOver == false) {
+        //set checker to be false as check has not been run
+        foundWord = false;
+
+        //set up message
+        noStroke();
+        fill("lightgreen");
+        rect(
+            rgbButton2.x + rgbButton2.width,
+            buttonHeight,
+            backingWidth,
+            rgbButton1.height
+        );
+        textAlign(LEFT);
+        textSize(20);
+        fill("black");
+
+        if (words.includes(rgbInput1.value()) === true) {
+            if (wordArray.includes(rgbInput1.value()) === true) {
+                console.log("here");
+
+                //remove value from wordArray
+                wordArray.splice(wordArray.indexOf(rgbInput1.value()), 1);
+
+                text(
+                    "Correct!",
+                    rgbButton2.x + rgbButton2.width + 10,
+                    buttonHeight + 17.5
+                );
+
+                //add score
+                score += 5;
+            } else {
+                text(
+                    "Already found!",
+                    rgbButton2.x + rgbButton2.width + 10,
+                    buttonHeight + 17.5
+                );
+
+                //initiate score penalty
+                score--;
+            }
+        } else {
+            text(
+                "Not found!",
+                rgbButton2.x + rgbButton2.width + 10,
+                buttonHeight + 17.5
+            );
+
+            //initiate score penalty
+            score -= 2;
+        }
+
+        //set up checker to indicate word is found
+        foundWord = true;
+        rgbInput1.value("");
+
+        //check if all words have already been inputted
+        if (0 == wordArray.length) {
+            seedScore = score;
+            overGame();
+        }
+    }
+}
+
+//Game Over function
+function overGame() {
+    //dictate checker that game is over
+    gameOver = true;
+
+    //fix time value
+    if (seedTime == 0) {
+        seedTime = currentTime;
+    } else {
+        seedTime = seedTime;
+    }
+
+    //set opacity of fill for light-coloured background in line 222 to transparent (also see comment line 221)
+    done = 0;
+
+    //set up random fill background for screen
+    r = random(0, 255);
+    g = random(0, 255);
+    b = random(0, 255);
+    fill(r, g, b);
+    rect(0, 0, width, height);
+
+    //set up text display that contrasts with screen background fill
+    fill(255 - r, 255 - g, 255 - b);
+    textSize(18);
+    textAlign(CENTER);
+    textWrap(WORD);
+
+    //regenerate header
+    setHeader();
+
+    //stop song
+    songRgb.stop();
+
+    //set win/lose sound
+    if (seedScore > (words.length * 5) / 2) {
+        //play win song if pass
+        songWin.setVolume(vol);
+        songWin.play();
+
+        //if fail
+    } else {
+        //play lose song
+        songLose.setVolume(vol);
+        songLose.play();
+    }
+
+    //Game over text
+    push();
+    textSize(30);
+    text(
+        "You found a total of " +
+        words.length +
+        " words in " +
+        currentTime +
+        " seconds and acquired a total score of " +
+        seedScore,
+        (canvasSize * 103) / 160,
+        canvasSize / 2
+    );
+    pop();
+}
